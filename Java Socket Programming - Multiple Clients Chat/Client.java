@@ -2,10 +2,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-// A client sends messages to the server, the server spawns a thread to communicate with the client.
-// Each communication with a client is added to an array list so any message sent gets sent to every other client
-// by looping through it.
-
 public class Client {
 
     // A client has a socket to connect to the server and a reader and writer to receive and send messages respectively.
@@ -71,12 +67,6 @@ public class Client {
 
     // Helper method to close everything so you don't have to repeat yourself.
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
-        // Note you only need to close the outer wrapper as the underlying streams are closed when you close the wrapper.
-        // Note you want to close the outermost wrapper so that everything gets flushed.
-        // Note that closing a socket will also close the socket's InputStream and OutputStream.
-        // Closing the input stream closes the socket. You need to use shutdownInput() on socket to just close the input stream.
-        // Closing the socket will also close the socket's input stream and output stream.
-        // Close the socket after closing the streams.
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();
