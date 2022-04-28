@@ -1,22 +1,7 @@
 
-// 1. Open a socket.
-// 2. Open an input stream and output stream to the socket.
-// 3. Read from and write to the stream according to the server's protocol.
-// 4. Close the streams.
-// 5. Close the socket.
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-
-/**
- * When a client connects the server spawns a thread to handle the client.
- * This way the server can handle multiple clients at the same time.
- *
- * This keyword should be used in setters, passing the object as an argument,
- * and to call alternate constructors (a constructor with a different set of
- * arguments.
- */
 
 // Runnable is implemented on a class whose instances will be executed by a thread.
 public class ClientHandler implements Runnable {
@@ -48,9 +33,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // Everything in this method is run on a separate thread. We want to listen for messages
-    // on a separate thread because listening (bufferedReader.readLine()) is a blocking operation.
-    // A blocking operation means the caller waits for the callee to finish its operation.
     @Override
     public void run() {
         String messageFromClient;
@@ -68,9 +50,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // Send a message through each client handler thread so that everyone gets the message.
-    // Basically each client handler is a connection to a client. So for any message that
-    // is received, loop through each connection and send it down it.
+   
     public void broadcastMessage(String messageToSend) {
         for (ClientHandler clientHandler : clientHandlers) {
             try {
@@ -95,12 +75,7 @@ public class ClientHandler implements Runnable {
 
     // Helper method to close everything so you don't have to repeat yourself.
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
-        // Note you only need to close the outer wrapper as the underlying streams are closed when you close the wrapper.
-        // Note you want to close the outermost wrapper so that everything gets flushed.
-        // Note that closing a socket will also close the socket's InputStream and OutputStream.
-        // Closing the input stream closes the socket. You need to use shutdownInput() on socket to just close the input stream.
-        // Closing the socket will also close the socket's input stream and output stream.
-        // Close the socket after closing the streams.
+        
 
         // The client disconnected or an error occurred so remove them from the list so no message is broadcasted.
         removeClientHandler();
